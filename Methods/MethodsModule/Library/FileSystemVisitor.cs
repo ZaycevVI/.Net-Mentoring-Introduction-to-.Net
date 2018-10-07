@@ -22,10 +22,10 @@ namespace Library
         private readonly List<ItemFindedArg<FileSystemInfo>> _argList;
         private List<FileSystemInfo> _fileSystemInfos;
 
-        public FileSystemVisitor(string path, Func<DirectoryInfo, bool> directoryFilter = null,
+        public FileSystemVisitor(DirectoryInfo directoryInfo, Func<DirectoryInfo, bool> directoryFilter = null,
             Func<FileInfo, bool> fileFilter = null)
         {
-            _directoryInfo = new DirectoryInfo(path);
+            _directoryInfo = directoryInfo;
             _directoryFilter = directoryFilter;
             _fileFilter = fileFilter;
             _argList = new List<ItemFindedArg<FileSystemInfo>>();
@@ -62,23 +62,39 @@ namespace Library
                 switch (systemInfo)
                 {
                     case FileInfo file:
-                        OnFileFinded(file);
-                        if (IsFileFilterPassed(file))
-                            OnFileFinded(file, true);
-
-                        _fileSystemInfos.Add(systemInfo);
+                        RegisterFile(file);
                         break;
                     case DirectoryInfo subDirectory:
-                        OnDirectoryFinded(subDirectory);
-                        if (IsDirectoryFilterPassed(subDirectory))
-                            OnDirectoryFinded(subDirectory, true);
-
-                        _fileSystemInfos.Add(subDirectory);
-
+                       RegisterDirectory(subDirectory);
                         StartSearch(subDirectory);
                         break;
                 }
             }
+        }
+
+        private void RegisterFile(FileInfo fileInfo)
+        {
+            OnFileFinded(fileInfo);
+
+            if (IsFileFilterPassed(fileInfo))
+            {
+                OnFileFinded(fileInfo, true);
+                _fileSystemInfos.Add(fileInfo);
+            }
+            else if (_fileFilter == null)
+                _fileSystemInfos.Add(fileInfo);
+        }
+
+        private void RegisterDirectory(DirectoryInfo directoryInfo)
+        {
+            OnDirectoryFinded(directoryInfo);
+            if (IsDirectoryFilterPassed(directoryInfo))
+            {
+                OnDirectoryFinded(directoryInfo, true);
+                _fileSystemInfos.Add(directoryInfo);
+            }
+            else if (_directoryFilter == null)
+                _fileSystemInfos.Add(directoryInfo);
         }
 
         private bool IsFileFilterPassed(FileInfo fileInfo)

@@ -12,7 +12,6 @@ namespace WpfApp
     /// </summary>
     public partial class MainWindow : Window
     {
-        public bool IsButtonEnabled { get; set; } = true;
         public bool IsSearchStopped { get; set; } = true;
 
         public MainWindow()
@@ -23,8 +22,6 @@ namespace WpfApp
 
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
-            IsButtonEnabled = false;
-
             ClearControls();
 
             var path = TextBox.Text;
@@ -36,18 +33,15 @@ namespace WpfApp
             {
                 try
                 {
-                    var fileSystemVisitor = new FileSystemVisitor(path);
+                    var fileSystemVisitor = new FileSystemVisitor(
+                        new DirectoryInfo(path));
                     AddSubscribers(fileSystemVisitor);
                     fileSystemVisitor.GenerateDirectoryTree();
                 }
                 catch (Exception ex)
                 {
                     Dispatcher.Invoke(() => ExceptionLabel.Content = $"[Error Message]:{ex.Message}");
-                    IsButtonEnabled = true;
-
                 }
-
-                Dispatcher.Invoke(() => IsButtonEnabled = true);
             });
         }
 

@@ -11,8 +11,7 @@
         <Label Content="Log inforamtion:" HorizontalAlignment="Left" Margin="438,128,0,0" VerticalAlignment="Top" Width="317" Background="Chartreuse" />
         <TextBox HorizontalAlignment="Left" Height="23" Margin="48,219,0,0" TextWrapping="Wrap" Text="example: D:\" VerticalAlignment="Top" Width="202" Name="TextBox"/>
         <Label Content="Enter path to folder:" HorizontalAlignment="Left" Margin="48,181,0,0" VerticalAlignment="Top" Width="202" Background="Aqua"/>
-        <Button Content="Enter" HorizontalAlignment="Left" Margin="48,265,0,0" VerticalAlignment="Top" Width="202" Click="Button_Click" 
-                IsEnabled="{Binding Path=IsButtonEnabled}" Name="EnterButton"/>
+        <Button Content="Enter" HorizontalAlignment="Left" Margin="48,265,0,0" VerticalAlignment="Top" Width="202" Click="Button_Click" Name="EnterButton"/>
         <TextBlock HorizontalAlignment="Left" Margin="15,391,0,0" VerticalAlignment="Top" Width="235" Name="Error"/>
         <Label HorizontalAlignment="Left" Margin="15,383,0,0" VerticalAlignment="Top" Name="ExceptionLabel"/>
         <Button Content="Stop" HorizontalAlignment="Left" Margin="48,312,0,0" VerticalAlignment="Top" Width="202" Name="StopButton" Click="StopButton_Click"/>
