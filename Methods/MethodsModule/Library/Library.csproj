@@ -40,7 +40,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Entity\Directory.cs" />
+    <Compile Include="EventArgs\FileSystemVisitorBaseArg.cs" />
+    <Compile Include="EventArgs\FinishArg.cs" />
+    <Compile Include="EventArgs\ItemFindedArg.cs" />
+    <Compile Include="EventArgs\StartArg.cs" />
     <Compile Include="FileSystemVisitor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

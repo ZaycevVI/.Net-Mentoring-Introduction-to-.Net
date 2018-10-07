@@ -1,81 +1,145 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Library.EventArgs;
 
 namespace Library
 {
-    public class FileSystemVisitor : IEnumerable<FileSystemInfo>
+    public class FileSystemVisitor
     {
-        private string _path;
-        public string Path
+        public event EventHandler<ItemFindedArg<FileSystemInfo>> FileFinded;
+        public event EventHandler<ItemFindedArg<FileSystemInfo>> DirectoryFinded;
+        public event EventHandler<ItemFindedArg<FileSystemInfo>> FilteredFileFinded;
+        public event EventHandler<ItemFindedArg<FileSystemInfo>> FilteredDirectoryFinded;
+        public event EventHandler<StartArg> Start;
+        public event EventHandler<FinishArg> Finish;
+
+        private readonly DirectoryInfo _directoryInfo;
+        private readonly Func<DirectoryInfo, bool> _directoryFilter;
+        private readonly Func<FileInfo, bool> _fileFilter;
+
+        private readonly List<ItemFindedArg<FileSystemInfo>> _argList;
+        private List<FileSystemInfo> _fileSystemInfos;
+
+        public FileSystemVisitor(string path, Func<DirectoryInfo, bool> directoryFilter = null,
+            Func<FileInfo, bool> fileFilter = null)
         {
-            get => _path ?? string.Empty;
-            set => _path = value;
+            _directoryInfo = new DirectoryInfo(path);
+            _directoryFilter = directoryFilter;
+            _fileFilter = fileFilter;
+            _argList = new List<ItemFindedArg<FileSystemInfo>>();
+            _fileSystemInfos = new List<FileSystemInfo>();
         }
 
-        private DirectoryInfo _directoryInfo;
-
-        private DirectoryInfo _directoryInfoCursor;
-
-        public FileSystemVisitor(string path)
+        public IEnumerable<FileSystemInfo> GenerateDirectoryTree()
         {
-            Path = path;
-            _directoryInfoCursor = _directoryInfo =
-                new DirectoryInfo(Path);
+            Clear();
+
+            OnStart();
+
+            StartSearch(_directoryInfo);
+
+            ClearExcludedItems();
+
+            OnFinish();
+
+            return _fileSystemInfos;
         }
 
-        public IEnumerator<FileSystemInfo> GetEnumerator()
+        private void StartSearch(DirectoryInfo directoryInfo)
         {
-            if (_directoryInfoCursor == null || !_directoryInfoCursor.Exists)
-                yield break;
+            var accessControl = directoryInfo.GetAccessControl();
 
-            var files = _directoryInfoCursor.GetFiles();
-            var directories = _directoryInfoCursor.GetDirectories();
+            if (accessControl.AreAccessRulesProtected)
+                return;
 
-
-            foreach (var directory in directories)
+            foreach (var systemInfo in directoryInfo.EnumerateFileSystemInfos())
             {
-                yield return directory;
-            }
+                if (IsSearchStopped())
+                    return;
 
-            foreach (var file in files)
-            {
-                yield return file;
-            }
-
-            GetEnumerator();
-        }
-
-        private IEnumerator<FileSystemInfo> GetFileSystemInfo(DirectoryInfo directoryInfo)
-        {
-            var files = _directoryInfoCursor.GetFiles();
-            var subDirectories = _directoryInfoCursor.GetDirectories();
-
-            foreach (var directory in subDirectories)
-            {
-                yield return directory;
-            }
-
-            foreach (var file in files)
-            {
-                yield return file;
-            }
-
-            foreach (var subDirectory in subDirectories)
-            {
-                foreach (var VARIABLE in GetFileSystemInfo(subDirectory))
+                switch (systemInfo)
                 {
-                    
-                }
+                    case FileInfo file:
+                        OnFileFinded(file);
+                        if (IsFileFilterPassed(file))
+                            OnFileFinded(file, true);
 
-                
+                        _fileSystemInfos.Add(systemInfo);
+                        break;
+                    case DirectoryInfo subDirectory:
+                        OnDirectoryFinded(subDirectory);
+                        if (IsDirectoryFilterPassed(subDirectory))
+                            OnDirectoryFinded(subDirectory, true);
+
+                        _fileSystemInfos.Add(subDirectory);
+
+                        StartSearch(subDirectory);
+                        break;
+                }
             }
         }
 
-        IEnumerator IEnumerable.GetEnumerator()
+        private bool IsFileFilterPassed(FileInfo fileInfo)
         {
-            return GetEnumerator();
+            return _fileFilter != null && _fileFilter(fileInfo);
+        }
+
+        private bool IsDirectoryFilterPassed(DirectoryInfo directoryInfo)
+        {
+            return _directoryFilter != null && _directoryFilter(directoryInfo);
+        }
+
+        private bool IsSearchStopped()
+        {
+            return _argList.Any(arg => arg.StopSearch);
+        }
+
+        private void ClearExcludedItems()
+        {
+            _fileSystemInfos = _fileSystemInfos.Where(item => !_argList.Any(
+                arg => arg.IsExcluded && arg.FileSystemInfo == item)).ToList();
+        }
+
+        private void Clear()
+        {
+            _argList.Clear();
+            _fileSystemInfos.Clear();
+        }
+
+        protected virtual void OnFileFinded(FileInfo fileInfo, bool isFiltered = false)
+        {
+            var arg = new ItemFindedArg<FileSystemInfo>(fileInfo);
+            _argList.Add(arg);
+
+            if (isFiltered)
+                FilteredFileFinded?.Invoke(this, arg);
+
+            else
+                FileFinded?.Invoke(this, arg);
+        }
+
+        protected virtual void OnDirectoryFinded(DirectoryInfo directoryInfo, bool isFiltered = false)
+        {
+            var arg = new ItemFindedArg<FileSystemInfo>(directoryInfo);
+            _argList.Add(arg);
+
+            if (isFiltered)
+                FilteredDirectoryFinded?.Invoke(this, arg);
+
+            else
+                DirectoryFinded?.Invoke(this, arg);
+        }
+
+        protected virtual void OnStart()
+        {
+            Start?.Invoke(this, new StartArg($"[{DateTime.Now}]: Start of search."));
+        }
+
+        protected virtual void OnFinish()
+        {
+            Finish?.Invoke(this, new FinishArg($"[{DateTime.Now}]: Search was finished."));
         }
     }
 }
