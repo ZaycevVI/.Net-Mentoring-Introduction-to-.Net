@@ -5,18 +5,14 @@
 //Copyright (C) Microsoft Corporation.  All rights reserved.
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Windows.Forms;
-using System.Xml.Linq;
 using SampleSupport;
 using Task.Data;
 
 // Version Mad01
 
-namespace SampleQueries
+namespace Task
 {
     [Title("LINQ Module")]
     [Prefix("Linq")]
@@ -30,22 +26,16 @@ namespace SampleQueries
         [Description("Выдайте список всех клиентов, чей суммарный оборот (сумма всех заказов) превосходит некоторую величину X. Продемонстрируйте выполнение запроса с различными X (подумайте, можно ли обойтись без копирования запроса несколько раз)")]
         public void Linq1()
         {
-            var total = 10;
+            var total = 500;
 
             var customers = _dataSource.Customers
                 .Where(c => c.Orders.All(
-                    o => o.Total > total));
-
-            foreach (var c in _dataSource.Customers)
-            {
-                ObjectDumper.Write(c);
-            }
-
-            total = 20000;
+                            o => o.Total > total) &&
+                            c.Orders.Length != 0);
 
             foreach (var c in customers)
             {
-                ObjectDumper.Write(c);
+                ObjectDumper.Write(c, 2);
             }
         }
 
@@ -161,21 +151,102 @@ namespace SampleQueries
         [Description("Сгруппируйте все продукты по категориям, внутри – по наличию на складе, внутри последней группы отсортируйте по стоимости")]
         public void Linq()
         {
-            var customers = _dataSource.Products
+            var products = _dataSource.Products
                 .GroupBy(p => p.Category)
                 .Select(p => new
                 {
                     Category = p.Key,
-                    StockGroup = p.GroupBy(product => product.UnitsInStock).Select(products => new
+                    StockGroup = p.GroupBy(product => product.UnitsInStock).Select(product => new
                     {
-                        UnitsInStock = products.Key,
-                        Products = products.Select(p1 => p1).OrderBy(p2 => p2.UnitPrice)
+                        UnitsInStock = product.Key,
+                        Products = product.Select(p1 => p1).OrderBy(p2 => p2.UnitPrice)
                     })
+                });
+
+            foreach (var p in products)
+            {
+                ObjectDumper.Write(p, 3);
+            }
+        }
+
+        [Category("Linq QA")]
+        [Title("Task 8")]
+        [Description("Сгруппируйте товары по группам «дешевые», «средняя цена», «дорогие». Границы каждой группы задайте сами")]
+        public void Linq8()
+        {
+            var products = _dataSource.Products
+                .GroupBy(p =>
+                {
+                    if (p.UnitPrice < 10)
+                        return new KeyValuePair<int, string>(10, "Cheap < 10");
+                    return p.UnitPrice < 20
+                        ? new KeyValuePair<int, string>(20, "Medium < 20")
+                        : new KeyValuePair<int, string>(30, "Expensive >= 20");
+                })
+                .Select(p => new
+                {
+                    Category = p.Key.Value,
+                    Products = p.Select(p1 => p1)
+                        .OrderByDescending(p2 => p2.UnitPrice),
+                    p.Key.Key
+                })
+                .OrderByDescending(o => o.Key);
+
+            foreach (var p in products)
+            {
+                ObjectDumper.Write(p, 2);
+            }
+        }
+
+        [Category("Linq QA")]
+        [Title("Task 9")]
+        [Description("Рассчитайте среднюю прибыльность каждого города (среднюю сумму заказа по всем клиентам из данного города) и среднюю интенсивность (среднее количество заказов, приходящееся на клиента из каждого города)")]
+        public void Linq9()
+        {
+            var customers = _dataSource.Customers
+                .GroupBy(c => c.City)
+                .Select(c => new
+                {
+                    City = c.Key,
+                    AvgOrderPrice = c.SelectMany(c1 => c1.Orders).Average(c2 => c2.Total),
+                    AvgIntensity = c.Select(c3 => c3.Orders.Length).Average()
                 });
 
             foreach (var c in customers)
             {
-                ObjectDumper.Write(c);
+                ObjectDumper.Write(c, 2);
+            }
+        }
+
+
+        [Category("Linq QA")]
+        [Title("Task 10")]
+        [Description("Сделайте среднегодовую статистику активности клиентов по месяцам (без учета года), статистику по годам, по годам и месяцам (т.е. когда один месяц в разные годы имеет своё значение).")]
+        public void Linq10()
+        {
+            var customers = _dataSource.Customers
+                .Select(c => new
+                {
+                    Customer = c.CompanyName,
+                    MonthStats = c.Orders
+                            .GroupBy(o => o.OrderDate.Month)
+                            .Select(a => new
+                            {
+                                Month = a.Key,
+                                OrdersMade = a.Count()
+                            }),
+                    YearStats = c.Orders
+                            .GroupBy(o => o.OrderDate.Year)
+                            .Select(a => new
+                            {
+                                Month = a.Key,
+                                OrdersMade = a.Count()
+                            })
+                });
+
+            foreach (var c in customers)
+            {
+                ObjectDumper.Write(c, 2);
             }
         }
     }

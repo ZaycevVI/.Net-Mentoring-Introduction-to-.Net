@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using SampleSupport;
 using SampleQueries;
 using System.IO;
+using Task;
 
 // See the ReadMe.html for additional information
 namespace SampleQueries
