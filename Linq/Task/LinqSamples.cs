@@ -29,9 +29,7 @@ namespace Task
             var total = 500;
 
             var customers = _dataSource.Customers
-                .Where(c => c.Orders.All(
-                            o => o.Total > total) &&
-                            c.Orders.Length != 0);
+                .Where(c => c.Orders.Sum(o => total) > total);
 
             foreach (var c in customers)
             {
