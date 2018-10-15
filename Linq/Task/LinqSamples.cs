@@ -243,7 +243,16 @@ namespace Task
                             {
                                 Month = a.Key,
                                 OrdersMade = a.Count()
-                            })
+                            }),
+
+                    YearsAndMonthes = c.Orders
+                        .GroupBy(o => new {o.OrderDate.Year, o.OrderDate.Month})
+                        .Select(a => new
+                        {
+                            a.Key.Year,
+                            a.Key.Month,
+                            OrdersMade = a.Count()
+                        })
                 });
 
             foreach (var c in customers)
