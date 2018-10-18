@@ -29,9 +29,7 @@ namespace Task
             var total = 500;
 
             var customers = _dataSource.Customers
-                .Where(c => c.Orders.All(
-                            o => o.Total > total) &&
-                            c.Orders.Length != 0);
+                .Where(c => c.Orders.Sum(o => o.Total) > total);
 
             foreach (var c in customers)
             {
@@ -116,12 +114,16 @@ namespace Task
                         c.CompanyName,
                         order?.OrderDate.Month,
                         order?.OrderDate.Year,
-                        order?.Total
+                        order?.Total,
+                        GoodsTurnover = c.Orders?.Sum(o => o.Total) ?? 0
                     };
                 })
-                .OrderBy(c => c.Year)
+                .OrderBy(c => c.Year == null ? 2 : 1)
+                .ThenBy(c => c.Year)
+                .ThenBy(c => c.Month == null ? 2 : 1)
                 .ThenBy(c => c.Month)
-                .ThenByDescending(c => c.Total)
+                .ThenByDescending(c => c.GoodsTurnover)
+                .ThenBy(c => c.CompanyName == null ? 2 : 1)
                 .ThenBy(c => c.CompanyName);
 
             foreach (var c in customers)
@@ -136,9 +138,9 @@ namespace Task
         public void Linq6()
         {
             var customers = _dataSource.Customers
-                .Where(c => c.PostalCode.Any(p => !char.IsDigit(p)
+                .Where(c => c.PostalCode?.Any(p => !char.IsDigit(p)
                 || string.IsNullOrEmpty(c.Region)
-                || !c.Phone.StartsWith("(")));
+                || !c.Phone.StartsWith("(")) == true);
 
             foreach (var c in customers)
             {
@@ -241,7 +243,16 @@ namespace Task
                             {
                                 Month = a.Key,
                                 OrdersMade = a.Count()
-                            })
+                            }),
+
+                    YearsAndMonthes = c.Orders
+                        .GroupBy(o => new {o.OrderDate.Year, o.OrderDate.Month})
+                        .Select(a => new
+                        {
+                            a.Key.Year,
+                            a.Key.Month,
+                            OrdersMade = a.Count()
+                        })
                 });
 
             foreach (var c in customers)
