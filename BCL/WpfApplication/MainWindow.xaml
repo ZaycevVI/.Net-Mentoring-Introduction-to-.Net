@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApplication"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="1085.04">
+        Title="MainWindow" Height="450" Width="1294.878">
     <Grid Margin="0,0,2,0">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="509*"/>
@@ -15,7 +15,7 @@
             <TextBlock TextWrapping="Wrap" x:Name="TrackedDirectoriesText"/>
             <ListBox Height="244" RenderTransformOrigin="0.475,2.076" x:Name="ListBox" DisplayMemberPath="Name"/>
         </StackPanel>
-        <StackPanel HorizontalAlignment="Left" Height="131" Margin="391,207,0,0" VerticalAlignment="Top" Width="216" Grid.ColumnSpan="2">
+        <StackPanel HorizontalAlignment="Left" Height="131" Margin="523,207,0,0" VerticalAlignment="Top" Width="216">
             <StackPanel Height="23" Orientation="Horizontal">
                 <TextBlock TextWrapping="Wrap" Name="FileTemplateText" Margin="0 0 10 0"/>
                 <TextBlock TextWrapping="Wrap" Name="FileTemplateTextValue"/>
@@ -37,14 +37,14 @@
                 <TextBlock TextWrapping="Wrap" Name="DateEnabledTextValue"/>
             </StackPanel>
         </StackPanel>
-        <ListBox HorizontalAlignment="Left" Height="241" Margin="215,97,0,0" VerticalAlignment="Top" Width="152" Name="RulesLB">
+        <ListBox HorizontalAlignment="Left" Height="241" Margin="215,97,0,0" VerticalAlignment="Top" Width="246" Name="RulesLB">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel>
                         <TextBlock>
-                            <Run Text="1)"></Run>
+                            <Run Text="Template: "></Run>
                             <Run Text="{Binding Template}"></Run>
-                            <Run Text="2)"></Run>
+                            <Run Text="; Path: "></Run>
                             <Run Text="{Binding Destination}"></Run>
                         </TextBlock>
                     </StackPanel>

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -26,8 +25,8 @@ namespace WpfApplication
             _fileSystemWatchers = new List<FileSystemWatcher>();
             _rules = new List<(Regex template, string destination)>();
             _settingSection = ReadSettings();
-            CultureInfo.CurrentUICulture = 
-                CultureInfo.CurrentCulture = 
+            CultureInfo.CurrentUICulture =
+                CultureInfo.CurrentCulture =
                     new CultureInfo(_settingSection.Culture);
             InitializeComponent();
             UpdateContent();
@@ -47,7 +46,11 @@ namespace WpfApplication
             }
 
             if (!System.IO.Directory.Exists(destination))
-                System.IO.Directory.CreateDirectory(destination);
+                SafeRun(() =>
+                {
+                    System.IO.Directory.CreateDirectory(destination);
+                    LogMessage($"Create directory by path: {destination}.");
+                });
 
             var fileName = string.Empty;
 
@@ -75,11 +78,11 @@ namespace WpfApplication
             try
             {
                 System.IO.File.Copy(fileSystemEventArgs.FullPath, path);
-                LogMessage($"File {path} was successfully copied");
+                LogMessage($"File [{path}] was successfully copied");
             }
             catch (Exception e)
             {
-                LogMessage(e.Message + $"File: {path}");
+                LogMessage(e.Message + $". File: {path}");
             }
         }
 
@@ -126,7 +129,13 @@ namespace WpfApplication
                 var path = (directory as Directory).Name;
 
                 if (!System.IO.Directory.Exists(path))
-                    System.IO.Directory.CreateDirectory(path);
+                {
+                    SafeRun(() =>
+                    {
+                        System.IO.Directory.CreateDirectory(path);
+                        LogMessage($"Create directory by path: {path}.");
+                    });
+                }
 
                 var fileSystemWatcher =
                     new FileSystemWatcher(path) { EnableRaisingEvents = true };
@@ -140,10 +149,25 @@ namespace WpfApplication
         {
             foreach (var fileSystemWatcher in _fileSystemWatchers)
             {
+                fileSystemWatcher.Created -= FileSystemWatcherOnCreated;
                 fileSystemWatcher.Dispose();
             }
 
             base.OnClosed(e);
+        }
+
+        private void SafeRun(Action action)
+        {
+            try
+            {
+                action.Invoke();
+            }
+
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+                Close();
+            }
         }
     }
 }
