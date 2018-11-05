@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<CD serial="B6B41B" disc-length="36:55" xmlns="http://epam.com/xml/CD">
+  <artist>"Weird Al" Yankovic</artist>
+  <title>Dare to be Stupid</title>
+  <genre>parody</genre>
+  <date-released>1990</date-released>
+  <!--date-released is the date released to CD, not to record-->
+  <song>
+    <title>Like A Surgeon</title>
+    <length>
+      <minutes>3</minutes>
+      <seconds>33</seconds>
+    </length>
+    <parody>
+      <title>Like A Virgin</title>
+      <artist>Madonna</artist>
+    </parody>
+  </song>
+  <song>
+    <title>Dare to be Stupid</title>
+    <length>
+      <minutes>3</minutes>
+      <seconds>25</seconds>
+    </length>
+    <parody/>
+  </song>
+</CD>

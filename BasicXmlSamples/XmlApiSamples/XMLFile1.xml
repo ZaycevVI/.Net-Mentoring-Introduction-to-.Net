@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<?instruction no data ?>
+<root attribute1="value1">
+  <!-- My comment -->
+  <element1> First text(5&lt;4) </element1>
+  <element2>Some text <b>bold</b> fragment</element2>
+  <element3><![CDATA[5<4]]></element3>
+</root>
