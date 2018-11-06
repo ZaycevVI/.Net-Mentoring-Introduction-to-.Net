@@ -68,7 +68,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Content.resx</DependentUpon>
     </Compile>
-    <Compile Include="SettingsSection.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -104,6 +103,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FileLibrary\FileLibrary.csproj">
+      <Project>{d626cd31-4570-41eb-8a8f-d57322250946}</Project>
+      <Name>FileLibrary</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,6 +1,6 @@
 ﻿using System.Configuration;
 
-namespace WpfApplication
+namespace FileLibrary.Configuration
 {
     public class SettingSection : ConfigurationSection
     {
