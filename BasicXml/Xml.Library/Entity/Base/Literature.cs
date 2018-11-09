@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Xml.Library.Entity
+namespace Xml.Library.Entity.Base
 {
     public abstract class Literature : EntityBase
     {

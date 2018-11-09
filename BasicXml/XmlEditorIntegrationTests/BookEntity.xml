@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<library date="11/09/2018 16:42:20">
+  <book>
+    <name>bookName</name>
+    <authors>
+      <author>author</author>
+    </authors>
+    <city>Minsk</city>
+    <publishHouse>aaa</publishHouse>
+    <publishDate>11/09/2018 16:42:20</publishDate>
+    <pageAmount>3</pageAmount>
+    <note>ffff</note>
+    <isbn>bbb</isbn>
+  </book>
+</library>

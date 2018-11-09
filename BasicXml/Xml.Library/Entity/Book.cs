@@ -1,6 +1,5 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Xml.Library.Entity.Base;
 
 namespace Xml.Library.Entity
 {

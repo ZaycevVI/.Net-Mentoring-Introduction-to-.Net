@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<library date="11/09/2018 15:46:53">
+  <newspaper>
+    <name>newspaperName</name>
+    <city>Brest</city>
+    <publishHouse>ooo</publishHouse>
+    <publishDate>11/09/2018 15:46:53</publishDate>
+    <pageAmount>3</pageAmount>
+    <note>nnote</note>
+    <number>12</number>
+    <date>11/09/2018 15:46:53</date>
+    <issn>issn</issn>
+  </newspaper>
+</library>

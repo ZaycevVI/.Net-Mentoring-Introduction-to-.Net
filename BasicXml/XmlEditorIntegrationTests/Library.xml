@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<library date="11/09/2018 16:42:20">
+  <book>
+    <name>bookName</name>
+    <authors>
+      <author>author</author>
+    </authors>
+    <city>Minsk</city>
+    <publishHouse>aaa</publishHouse>
+    <publishDate>11/09/2018 16:42:20</publishDate>
+    <pageAmount>3</pageAmount>
+    <note>ffff</note>
+    <isbn>bbb</isbn>
+  </book>
+  <newspaper>
+    <name>newspaperName</name>
+    <city>Brest</city>
+    <publishHouse>ooo</publishHouse>
+    <publishDate>11/09/2018 15:46:53</publishDate>
+    <pageAmount>3</pageAmount>
+    <note>nnote</note>
+    <number>12</number>
+    <date>11/09/2018 15:46:53</date>
+    <issn>issn</issn>
+  </newspaper>
+  <patent>
+    <name>patentName</name>
+    <inventor>Newton</inventor>
+    <country>Grodno</country>
+    <registrationNumber>123</registrationNumber>
+    <requestDate>11/09/2018 16:53:03</requestDate>
+    <publishDate>11/09/2018 16:53:03</publishDate>
+    <pageAmount>1</pageAmount>
+    <note>note</note>
+  </patent>
+</library>

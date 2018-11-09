@@ -41,11 +41,28 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="StreamEditor.cs" />
-    <Compile Include="XmlEditor.cs" />
+    <Compile Include="Constants\TagName.cs" />
+    <Compile Include="Converter\BookConverter.cs" />
+    <Compile Include="Converter\Interface\IConverter.cs" />
+    <Compile Include="Converter\NewspaperConverter.cs" />
+    <Compile Include="Converter\PatentConverter.cs" />
+    <Compile Include="Factory\EntityFactory.cs" />
+    <Compile Include="Helper\XmlHelper.cs" />
+    <Compile Include="Resolver\Mapper\BookMapper.cs" />
+    <Compile Include="Resolver\Mapper\IMapper.cs" />
+    <Compile Include="Resolver\IPropertyResolver.cs" />
+    <Compile Include="Resolver\Mapper\LiteratureMapper.cs" />
+    <Compile Include="Resolver\Mapper\Mapper.cs" />
+    <Compile Include="Resolver\Mapper\NewspaperMapper.cs" />
+    <Compile Include="Resolver\Mapper\PatentMapper.cs" />
+    <Compile Include="Resolver\PropertyResolver.cs" />
+    <Compile Include="Stream\Interface\IStreamEditor.cs" />
+    <Compile Include="Parser\Interface\IEntityParser.cs" />
+    <Compile Include="Parser\LibraryParser.cs" />
+    <Compile Include="Stream\XmlEditor.cs" />
     <Compile Include="Entity\Book.cs" />
-    <Compile Include="Entity\EntityBase.cs" />
-    <Compile Include="Entity\Literature.cs" />
+    <Compile Include="Entity\Base\EntityBase.cs" />
+    <Compile Include="Entity\Base\Literature.cs" />
     <Compile Include="Entity\Newspaper.cs" />
     <Compile Include="Entity\Patent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

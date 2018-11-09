@@ -1,4 +1,5 @@
 ﻿using System;
+using Xml.Library.Entity.Base;
 
 namespace Xml.Library.Entity
 {

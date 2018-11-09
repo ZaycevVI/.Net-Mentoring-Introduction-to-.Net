@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<library date="11/09/2018 16:53:03">
+  <patent>
+    <name>patentName</name>
+    <inventor>Newton</inventor>
+    <country>Grodno</country>
+    <registrationNumber>123</registrationNumber>
+    <requestDate>11/09/2018 16:53:03</requestDate>
+    <publishDate>11/09/2018 16:53:03</publishDate>
+    <pageAmount>1</pageAmount>
+    <note>note</note>
+  </patent>
+</library>
