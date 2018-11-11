@@ -27,7 +27,8 @@ namespace XmlEditorIntegrationTests
         private const string NewspaperEntityPath = "NewspaperEntity.xml";
         private const string PatentEntityPath = "PatentEntity.xml";
         private const string LibraryEntityPath = "Library.xml";
-        private const string OptionalFieldNumberPath = "OptionalFieldNumber.xml";
+        private const string OptionalFieldNumberReadPath = "OptionalFieldNumberRead.xml";
+        private const string OptionalFieldNumberWritePath = "OptionalFieldNumberWrite.xml";
         private Book _book;
         private Patent _patent;
         private Newspaper _newspaper;
@@ -106,8 +107,11 @@ namespace XmlEditorIntegrationTests
             if (File.Exists(NewspaperOptionalFieldXmlPath))
                 File.Delete(NewspaperOptionalFieldXmlPath);
 
-            if (File.Exists(OptionalFieldNumberPath))
-                File.Delete(OptionalFieldNumberPath);
+            if (File.Exists(OptionalFieldNumberReadPath))
+                File.Delete(OptionalFieldNumberReadPath);
+
+            if (File.Exists(OptionalFieldNumberWritePath))
+                File.Delete(OptionalFieldNumberWritePath);
         }
 
         [TestMethod]
@@ -302,24 +306,24 @@ namespace XmlEditorIntegrationTests
                 _newspaper
             };
 
-            var xmlEditor = new XmlEditor(OptionalFieldNumberPath);
+            var xmlEditor = new XmlEditor(OptionalFieldNumberWritePath);
 
             // Act
             xmlEditor.Write(entities);
 
             // Assert
-            File.Exists(OptionalFieldNumberPath).ShouldBeTrue();
-            var doc = XDocument.Load(OptionalFieldNumberPath);
+            File.Exists(OptionalFieldNumberWritePath).ShouldBeTrue();
+            var doc = XDocument.Load(OptionalFieldNumberWritePath);
             doc.Declaration.ShouldNotBeNull();
             doc.Root.HasElements.ShouldBeTrue();
-            doc.Root.Elements(TagName.Name).FirstOrDefault().ShouldBeNull();
+            doc.Root.Elements(TagName.Number).FirstOrDefault().ShouldBeNull();
         }
 
         [TestMethod]
         public void Read_Optional_Field_Works_As_Expected()
         {
             // Arrange
-            var xmlEditor = new XmlEditor(OptionalFieldNumberPath);
+            var xmlEditor = new XmlEditor(OptionalFieldNumberReadPath);
 
             // Act
             var result = xmlEditor.Read();

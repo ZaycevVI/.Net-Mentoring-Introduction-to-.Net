@@ -80,7 +80,7 @@
     <Content Include="EmptyTemplate.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="OptionalFieldNumber.xml">
+    <Content Include="OptionalFieldNumberRead.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="PatentEntity.xml">
