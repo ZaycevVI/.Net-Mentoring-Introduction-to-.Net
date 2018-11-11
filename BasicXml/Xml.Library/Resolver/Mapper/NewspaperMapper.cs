@@ -15,7 +15,8 @@ namespace Xml.Library.Resolver.Mapper
             switch (tag)
             {
                 case TagName.Number:
-                    entity.Number = Convert.ToUInt32(value);
+                    entity.Number = string.IsNullOrEmpty(value) ? 
+                        null as uint? : Convert.ToUInt32(value);
                     break;
                 case TagName.Date:
                     entity.Date = DateTime.Parse(value, CultureInfo.InvariantCulture);

@@ -24,7 +24,8 @@ namespace Xml.Library.Resolver.Mapper
                     entity.RegistrationNumber = XmlConvert.ToInt32(value);
                     break;
                 case TagName.RequestDate:
-                    entity.RequestDate = DateTime.Parse(value, CultureInfo.InvariantCulture);
+                    entity.RequestDate = string.IsNullOrEmpty(value) ?
+                        null as DateTime? : DateTime.Parse(value, CultureInfo.InvariantCulture);
                     break;
                 case TagName.PublishDate:
                     entity.PublishDate = DateTime.Parse(value, CultureInfo.InvariantCulture);
