@@ -312,14 +312,14 @@ namespace XmlEditorIntegrationTests
 
         private void CheckExpectedEntity(Patent patent)
         {
-            patent.Name.ShouldBe(patent.Name);
-            patent.Country.ShouldBe(patent.Country);
-            patent.PublishDate.ShouldBe(patent.PublishDate);
-            patent.RegistrationNumber.ShouldBe(patent.RegistrationNumber);
-            patent.RequestDate.ShouldBe(patent.RequestDate);
-            patent.Inventor.ShouldBe(patent.Inventor);
-            patent.Note.ShouldBe(patent.Note);
-            patent.PageAmount.ShouldBe(patent.PageAmount);
+            patent.Name.ShouldBe(_patent.Name);
+            patent.Country.ShouldBe(_patent.Country);
+            patent.PublishDate.ShouldBe(_patent.PublishDate);
+            patent.RegistrationNumber.ShouldBe(_patent.RegistrationNumber);
+            patent.RequestDate.ShouldBe(_patent.RequestDate);
+            patent.Inventor.ShouldBe(_patent.Inventor);
+            patent.Note.ShouldBe(_patent.Note);
+            patent.PageAmount.ShouldBe(_patent.PageAmount);
         }
 
         private void CheckExpectedNewspaperElement(XElement newspaper)
