@@ -7,6 +7,5 @@ namespace Xml.Library.Entity.Base
         public string City { get; set; }
         public string PublishingHouse { get; set; }
         public DateTime PublishDate { get; set; }
-
     }
 }

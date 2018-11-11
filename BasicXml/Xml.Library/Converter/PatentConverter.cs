@@ -15,7 +15,7 @@ namespace Xml.Library.Converter
                 new XElement(TagName.Inventor, patent.Inventor),
                 new XElement(TagName.Country, patent.Country),
                 new XElement(TagName.RegistrationNumber, patent.RegistrationNumber),
-                new XElement(TagName.RequestDate, patent.RequestDate?.ToString(CultureInfo.InvariantCulture)),
+                patent.RequestDate == null ? null :  new XElement(TagName.RequestDate, patent.RequestDate?.ToString(CultureInfo.InvariantCulture)),
                 new XElement(TagName.PublishDate, patent.PublishDate.ToString(CultureInfo.InvariantCulture)),
                 new XElement(TagName.PageAmount, patent.PageAmount),
                 new XElement(TagName.Note, patent.Note));

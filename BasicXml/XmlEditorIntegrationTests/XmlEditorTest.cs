@@ -21,11 +21,13 @@ namespace XmlEditorIntegrationTests
         private const string BookXmlPath = "Book.xml";
         private const string PatentXmlPath = "Patent.xml";
         private const string NewspaperXmlPath = "Newspaper.xml";
+        private const string NewspaperOptionalFieldXmlPath = "NewspaperOptionalField.xml";
         private const string XmlPath = "xmlFile.xml";
         private const string BookEntityPath = "BookEntity.xml";
         private const string NewspaperEntityPath = "NewspaperEntity.xml";
         private const string PatentEntityPath = "PatentEntity.xml";
         private const string LibraryEntityPath = "Library.xml";
+        private const string OptionalFieldNumberPath = "OptionalFieldNumber.xml";
         private Book _book;
         private Patent _patent;
         private Newspaper _newspaper;
@@ -100,6 +102,12 @@ namespace XmlEditorIntegrationTests
 
             if (File.Exists(LibraryEntityPath))
                 File.Delete(LibraryEntityPath);
+
+            if (File.Exists(NewspaperOptionalFieldXmlPath))
+                File.Delete(NewspaperOptionalFieldXmlPath);
+
+            if (File.Exists(OptionalFieldNumberPath))
+                File.Delete(OptionalFieldNumberPath);
         }
 
         [TestMethod]
@@ -282,6 +290,44 @@ namespace XmlEditorIntegrationTests
             CheckExpectedEntity(result.First() as Book);
             CheckExpectedEntity(result.ElementAt(1) as Newspaper);
             CheckExpectedEntity(result.Last() as Patent);
+        }
+
+        [TestMethod]
+        public void Write_Optional_Field_Works_As_Expected()
+        {
+            // Arrange
+            _newspaper.Number = null;
+            var entities = new List<EntityBase>
+            {
+                _newspaper
+            };
+
+            var xmlEditor = new XmlEditor(OptionalFieldNumberPath);
+
+            // Act
+            xmlEditor.Write(entities);
+
+            // Assert
+            File.Exists(OptionalFieldNumberPath).ShouldBeTrue();
+            var doc = XDocument.Load(OptionalFieldNumberPath);
+            doc.Declaration.ShouldNotBeNull();
+            doc.Root.HasElements.ShouldBeTrue();
+            doc.Root.Elements(TagName.Name).FirstOrDefault().ShouldBeNull();
+        }
+
+        [TestMethod]
+        public void Read_Optional_Field_Works_As_Expected()
+        {
+            // Arrange
+            var xmlEditor = new XmlEditor(OptionalFieldNumberPath);
+
+            // Act
+            var result = xmlEditor.Read();
+
+            // Assert
+            result.Count.ShouldBe(1);
+            var newspaper = result.First() as Newspaper;
+            newspaper.Number.ShouldBeNull();
         }
 
         private void CheckExpectedEntity(Newspaper newspaper)

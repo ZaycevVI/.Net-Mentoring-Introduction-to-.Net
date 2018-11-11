@@ -17,7 +17,7 @@ namespace Xml.Library.Converter
                 new XElement(TagName.PublishDate, newspaperConverter.PublishDate.ToString(CultureInfo.InvariantCulture)),
                 new XElement(TagName.PageAmount, newspaperConverter.PageAmount),
                 new XElement(TagName.Note, newspaperConverter.Note),
-                new XElement(TagName.Number, newspaperConverter.Number),
+                newspaperConverter.Number == null ? null :  new XElement(TagName.Number, newspaperConverter.Number),
                 new XElement(TagName.Date, newspaperConverter.Date.ToString(CultureInfo.InvariantCulture)),
                 new XElement(TagName.Issn, newspaperConverter.Issn));
         }
