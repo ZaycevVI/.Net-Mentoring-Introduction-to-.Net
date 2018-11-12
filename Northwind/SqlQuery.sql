@@ -153,3 +153,52 @@ e2.EmployeeID, e2.LastName
 From Northwind.Employees e1
 Left Join Northwind.Employees e2
 On e1.ReportsTo = e2.EmployeeID
+
+-- 2.3
+-- Определить продавцов, которые обслуживают регион 'Western' (таблица Region).
+
+Select distinct e.EmployeeID, e.FirstName, e.LastName, r.RegionDescription
+From Northwind.Employees e
+Inner Join Northwind.EmployeeTerritories et
+On e.EmployeeID = et.EmployeeID
+Inner Join Northwind.Territories t
+On et.TerritoryID = t.TerritoryID
+Inner Join Northwind.Region r
+On t.RegionID = r.RegionID
+Where RegionDescription = 'Western'
+
+-- Выдать в результатах запроса имена всех заказчиков из таблицы Customers и суммарное количество их заказов из таблицы Orders. Принять во внимание, что у некоторых заказчиков нет заказов, но они также должны быть выведены в результатах запроса. Упорядочить результаты запроса по возрастанию количества заказов.
+
+Select c.CustomerID, Count(c.CustomerID) [Amount of orders]
+From Northwind.Customers c
+Left Join Northwind.Orders o
+On c.CustomerID = o.CustomerID
+Group by c.CustomerID
+Order by Count(c.CustomerId)
+
+-- 2.4
+-- Выдать всех поставщиков (колонка CompanyName в таблице Suppliers), у которых нет хотя бы одного продукта на складе (UnitsInStock в таблице Products равно 0). Использовать вложенный SELECT для этого запроса с использованием оператора IN.
+
+Select CompanyName
+From Northwind.Suppliers s
+Where s.SupplierID In (
+	Select SupplierID
+	From Northwind.Products
+	Where UnitsInStock = 0)
+
+-- Выдать всех продавцов, которые имеют более 150 заказов. Использовать вложенный SELECT.
+
+Select CustomerID 
+From Northwind.Customers c
+Where CustomerId In (Select CustomerID
+			From Northwind.Orders
+			Group by CustomerID
+			Having Count(CustomerId) > 15)
+
+-- Выдать всех заказчиков (таблица Customers), которые не имеют ни одного заказа (подзапрос по таблице Orders). Использовать оператор EXISTS
+
+Select * 
+From Northwind.Customers c
+Where Not Exists (Select * 
+					From Northwind.Orders o
+					Where c.CustomerID = o.CustomerID)
