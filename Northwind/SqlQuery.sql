@@ -163,7 +163,7 @@ Inner Join Northwind.EmployeeTerritories et
 On e.EmployeeID = et.EmployeeID
 Inner Join Northwind.Territories t
 On et.TerritoryID = t.TerritoryID
-Inner Join Northwind.Region r
+Inner Join Northwind.[Regions] r
 On t.RegionID = r.RegionID
 Where RegionDescription = 'Western'
 
