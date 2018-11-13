@@ -78,7 +78,7 @@ Where p.ProductName like '%cho_olade%'
 -- 2.1
 -- Найти общую сумму всех заказов из таблицы Order Details с учетом количества закупленных товаров и скидок по ним. Результатом запроса должна быть одна запись с одной колонкой с названием колонки 'Totals'.
 
-Select Sum((UnitPrice * Quantity) * Discount) as Totals
+Select Sum(UnitPrice * Quantity * (1 - Discount)) as Totals
 From [Order Details]
 
 -- По таблице Orders найти количество заказов, которые еще не были доставлены (т.е. в колонке ShippedDate нет значения даты доставки). Использовать при этом запросе только оператор COUNT. Не использовать предложения WHERE и GROUP.
