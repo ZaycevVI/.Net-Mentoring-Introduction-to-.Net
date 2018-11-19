@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27428.2005
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntroductionToNoSql", "IntroductionToNoSql\IntroductionToNoSql.csproj", "{DA025E53-2309-4AF7-B186-6266FABE93A0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DA025E53-2309-4AF7-B186-6266FABE93A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA025E53-2309-4AF7-B186-6266FABE93A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA025E53-2309-4AF7-B186-6266FABE93A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA025E53-2309-4AF7-B186-6266FABE93A0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {39599615-9905-4DC2-803D-EB3CD15A00E8}
+	EndGlobalSection
+EndGlobal
