@@ -2,7 +2,7 @@
 using System.Linq;
 using Northwind.Entity;
 
-namespace NorthwindQuerySample
+namespace Northwind
 {
     public static class NorthwindQuery
     {

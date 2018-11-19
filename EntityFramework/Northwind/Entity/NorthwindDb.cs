@@ -1,3 +1,5 @@
+using Northwind.Migrations;
+
 namespace Northwind.Entity
 {
     using System;
