@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using MongoDB.Bson;
 
-namespace IntroductionToNoSql
+namespace IntroductionToNoSql.Entity
 {
     public class Book
     {
+        public ObjectId Id { get; set; }
         public string Name { get; set; }
         public string Author { get; set; }
         public int Count { get; set; }
