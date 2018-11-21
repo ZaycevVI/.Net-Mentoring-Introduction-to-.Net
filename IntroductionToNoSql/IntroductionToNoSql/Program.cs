@@ -143,11 +143,6 @@ namespace IntroductionToNoSql
             PrintSeparator();
         }
 
-        static void DeleteWithCountLess(int count)
-        {
-            BookDatabase.Books.RemoveAll(b => b.Count < count);
-        }
-
         static void PrintSeparator()
         {
             Console.WriteLine("==================================");
