@@ -1,0 +1,1 @@
+nuget pack MaestroNet.csproj -Properties Configuration=Release -Build -OutputDirectory .\Bin 
