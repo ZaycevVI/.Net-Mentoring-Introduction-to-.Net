@@ -7,6 +7,7 @@ using HttpFundamentals.Html.Converter;
 using HttpFundamentals.Html.FileSystem;
 using HttpFundamentals.Html.Parser;
 using HttpFundamentals.Html.Reader;
+using HttpFundamentals.Logger;
 using HttpFundamentals.Validation;
 using Url = AngleSharp.Url;
 
@@ -53,10 +54,9 @@ namespace HttpFundamentals.Html.Loader
             if(_isVerbose)
                 Console.WriteLine($"Analyzing url: {url}");
 
-
-            _directoryWrapper.Create(url);
-            var html = _reader.Read(url);
-            _fileWrapper.CreateHtml(url, html);
+            SafeRunner.Run(() => _directoryWrapper.Create(url));
+            var html = SafeRunner.Run(() => _reader.Read(url));
+            SafeRunner.Run(() => _fileWrapper.CreateHtmlFile(url, html));
 
             var doc = _parser.Parse(html);
 
@@ -86,46 +86,51 @@ namespace HttpFundamentals.Html.Loader
 
         private void CopyImages(IHtmlDocument document, string url)
         {
-            var images = document.Images;
-            var imgSources = images.Select(i => i.Source)
-                .Where(s => !string.IsNullOrEmpty(s) && !s.EndsWith("/") 
-                && IsMappedExtension(s));
+            var imgSources = FilterForFileSource(document.Images.Select(i => i.Source));
+
             foreach (var imgSource in imgSources)
-                _fileWrapper.CreateFile(imgSource, url);
+                SafeRunner.Run(() => _fileWrapper.CreateFile(imgSource, url));
         }
 
         private void CopyScripts(IHtmlDocument document, string url)
         {
-            var scripts = document.Scripts;
-            var scriptsSource = scripts.Select(s => s.Source)
-                .Where(s => !string.IsNullOrEmpty(s) 
-                && !s.EndsWith("/") && IsMappedExtension(s));
+            var scriptsSource = FilterForFileSource(document.Scripts.Select(s => s.Source));
 
             foreach (var scriptSource in scriptsSource)
-                _fileWrapper.CreateFile(scriptSource, url);
+                SafeRunner.Run(() => _fileWrapper.CreateFile(scriptSource, url));
         }
 
         private void CopyCss(IHtmlDocument document, string url)
         {
-            var stylesHref = document.QuerySelectorAll("link[href]")
-                .OfType<IHtmlLinkElement>().Select(s => s.Href)
-                .Where(s => !string.IsNullOrEmpty(s) 
-                && !s.EndsWith("/") && IsMappedExtension(s));
-
+            var stylesHref = FilterForFileSource(document.QuerySelectorAll("link[href]")
+                .OfType<IHtmlLinkElement>().Select(s => s.Href));
+                
             foreach (var styleSource in stylesHref)
-                _fileWrapper.CreateFile(styleSource, url);
+                SafeRunner.Run(() => _fileWrapper.CreateFile(styleSource, url));
+        }
+
+        private IEnumerable<string> FilterForFileSource(IEnumerable<string> sources)
+        {
+            return sources?.Where(s => !string.IsNullOrEmpty(s) 
+            && !s.EndsWith("/") && IsMappedExtension(s)) 
+            ?? Enumerable.Empty<string>();
         }
 
         #endregion
 
         private IEnumerable<IHtmlAnchorElement> GetLinks(IHtmlDocument document, string url)
         {
-            return document
+            var urlPath = new Url(url).Path;
+
+            var links = document
                 .Links.OfType<IHtmlAnchorElement>()
                 .Where(l => !string.IsNullOrEmpty(l.Href) 
-                && l.Href != "about:///"
-                && l.Href != "about://"
-                && !l.Href.EndsWith(new Url(url).Path));
+                && l.Href != "about://");
+
+            if (!string.IsNullOrWhiteSpace(urlPath))
+                links = links.Where(l => !l.Href.EndsWith(urlPath));
+
+            return links;
         }
 
         private bool IsMappedExtension(string path)

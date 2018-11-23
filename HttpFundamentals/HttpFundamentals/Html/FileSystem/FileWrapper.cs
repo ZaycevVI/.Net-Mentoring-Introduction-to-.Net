@@ -16,7 +16,7 @@ namespace HttpFundamentals.Html.FileSystem
             _basePath = new Url(rootUrl).Host;
         }
 
-        public void CreateHtml(string url, string content)
+        public void CreateHtmlFile(string url, string content)
         {
             var fullPath = url.ToPhysicalPath() + $"\\{DefaultHtmlFileName}";
 
@@ -41,18 +41,30 @@ namespace HttpFundamentals.Html.FileSystem
 
             using (var client = new WebClient())
             {
-                if (!Directory.Exists(Path.GetDirectoryName(filePath)))
-                    // ReSharper disable once AssignNullToNotNullAttribute
-                    Directory.CreateDirectory(Path.GetDirectoryName(filePath));
-
                 try
                 {
+                    if (!Directory.Exists(Path.GetDirectoryName(filePath)))
+                    {
+                        var dirPath = Path.GetDirectoryName(filePath);
+
+                        if (File.Exists(dirPath))
+                            dirPath += DateTime.Now.ToFileTime();
+
+                        Directory.CreateDirectory(dirPath);
+                    }
+
                     client.DownloadFile(url, filePath);
                 }
                 catch (WebException e)
                 {
-                    Console.WriteLine($"{DateTime.Now}: Failed to download file from url \"{url}\", to path \"{filePath}\"."
+                    throw new Exception(
+                        $"{DateTime.Now}: Failed to download file from url \"{url}\", to path \"{filePath}\"."
                         + $"{Environment.NewLine}[Error]: {e.Message}");
+                }
+                catch (PathTooLongException e)
+                {
+                    throw new Exception($"{DateTime.Now}: Too long path for windows." +
+                                      $"{Environment.NewLine}[Error]: {e.Message}");
                 }
             }
         }

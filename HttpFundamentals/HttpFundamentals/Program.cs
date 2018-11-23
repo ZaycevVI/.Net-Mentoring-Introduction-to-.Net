@@ -1,5 +1,3 @@
-using AngleSharp;
-using HttpFundamentals.Enum;
 using HttpFundamentals.Html.Loader;
 
 namespace HttpFundamentals
@@ -8,8 +6,7 @@ namespace HttpFundamentals
     {
         static void Main(string[] args)
         {
-            IWebPageLoader loader = new WebPageLoader("https://html-agility-pack.net/from-web", 
-                domainLimit: DomainLimit.NotHigherThanThisDomain);
+            IWebPageLoader loader = new WebPageLoader("https://html-agility-pack.net/from-web");
             loader.Load(3);
         }
     }

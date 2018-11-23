@@ -14,10 +14,10 @@ namespace HttpFundamentals.Validation
             {
                 case DomainLimit.WithoutLimits:
                     return true;
-                case DomainLimit.NotHigherThanThisDomain:
+                case DomainLimit.NotHigherThanCurrentDomain:
                     return Uri.Compare(urlRoot, url, UriComponents.Host | UriComponents.PathAndQuery,
                                UriFormat.SafeUnescaped, StringComparison.OrdinalIgnoreCase) >= 0;
-                case DomainLimit.OnlyThisDomain:
+                case DomainLimit.OnlyCurrentDomain:
                     return urlRoot.Host == url.Host;
             }
 

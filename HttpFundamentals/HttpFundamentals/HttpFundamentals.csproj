@@ -58,6 +58,7 @@
     <Compile Include="Html\Parser\WebPageParser.cs" />
     <Compile Include="Html\Reader\IWebPageReader.cs" />
     <Compile Include="Html\Reader\WebPageReader.cs" />
+    <Compile Include="Logger\SafeRunner.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Validation\DomainValidator.cs" />

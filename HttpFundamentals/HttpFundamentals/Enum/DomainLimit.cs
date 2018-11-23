@@ -3,7 +3,7 @@
     public enum DomainLimit
     {
         WithoutLimits,
-        OnlyThisDomain,
-        NotHigherThanThisDomain
+        OnlyCurrentDomain,
+        NotHigherThanCurrentDomain
     }
 }

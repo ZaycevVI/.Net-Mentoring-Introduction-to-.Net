@@ -2,7 +2,7 @@
 {
     public interface IFileWrapper
     {
-        void CreateHtml(string url, string content);
+        void CreateHtmlFile(string url, string content);
         void CreateFile(string url, string rootUrl);
     }
 }
