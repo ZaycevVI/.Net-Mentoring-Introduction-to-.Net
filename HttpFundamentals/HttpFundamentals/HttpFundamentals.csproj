@@ -45,16 +45,27 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Enum\DomainLimit.cs" />
+    <Compile Include="Helper\PathHelper.cs" />
+    <Compile Include="Html\Converter\PathConverter.cs" />
+    <Compile Include="Html\FileSystem\DirectoryWrapper.cs" />
+    <Compile Include="Html\FileSystem\FileWrapper.cs" />
+    <Compile Include="Html\FileSystem\IDirectoryWrapper.cs" />
+    <Compile Include="Html\FileSystem\IFileWrapper.cs" />
+    <Compile Include="Html\Loader\IWebPageLoader.cs" />
+    <Compile Include="Html\Loader\WebPageLoader.cs" />
     <Compile Include="Html\Parser\IWebPageParser.cs" />
     <Compile Include="Html\Parser\WebPageParser.cs" />
     <Compile Include="Html\Reader\IWebPageReader.cs" />
     <Compile Include="Html\Reader\WebPageReader.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Validation\DomainValidator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

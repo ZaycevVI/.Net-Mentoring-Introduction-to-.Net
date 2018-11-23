@@ -1,8 +1,7 @@
-﻿using HttpFundamentals.Html.Reader;
-using System;
+﻿using System;
 using System.Net.Http;
 
-namespace HttpFundamentals.Http.Reader
+namespace HttpFundamentals.Html.Reader
 {
     public class WebPageReader : IWebPageReader
     {
