@@ -23,7 +23,6 @@ namespace Task.DB
             Supplier = info.GetValue("Supplier", typeof(Supplier)) as Supplier;
             Order_Details = info.GetValue("Order_Details", typeof(ICollection<Order_Detail>)) as ICollection<Order_Detail>;
             Discontinued = info.GetBoolean("Discontinued");
-
         }
 
         public void GetObjectData(SerializationInfo info, StreamingContext context)
