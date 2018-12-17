@@ -30,7 +30,7 @@ namespace FibonacciCaching.Service
 
             var cacheStep = 2;
 
-            if (!_isCacheEnabled)
+            if (_isCacheEnabled)
             {
                 resultSet = _cache.Get(CacheKey) ?? resultSet;
                 cacheStep = resultSet.Count;
@@ -42,7 +42,7 @@ namespace FibonacciCaching.Service
             for (var i = cacheStep; i < step; i++)
                 resultSet.Add(resultSet[i -1] + resultSet[i - 2]);
 
-            if (!_isCacheEnabled)
+            if (_isCacheEnabled)
                 _cache.Set(CacheKey, resultSet);
 
             return resultSet;

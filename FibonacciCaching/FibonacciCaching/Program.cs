@@ -10,8 +10,8 @@ namespace FibonacciCaching
     {
         static void Main(string[] args)
         {
-            var serviceWithCache = new FibonacciService(new FibonacciRedisCache(), true);
-            var serviceWithoutCache = new FibonacciService(new FibonacciRedisCache(), false);
+            var serviceWithCache = new FibonacciService(new FibonacciMemoryCache(), true);
+            var serviceWithoutCache = new FibonacciService(new FibonacciMemoryCache(), false);
 
             do
             {
